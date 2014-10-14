@@ -2,6 +2,8 @@ package fjn.edu.br.View;
 
 import credicard.LeitorArquivoRemesa;
 import fjn.edu.br.Connection.Conn;
+import fjn.edu.br.Model.SolicitacaoCompra;
+import fjn.edu.br.dao.SolicitacaoCompraDAO;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,14 +36,14 @@ public class Janela extends JFrame implements ActionListener {
     private JTable table;
     private DefaultTableModel defaultTableModel;
     private String campo[] = new String[8];
-    private int intTotalRegistro, intNumRegistro, intRegistro, numSeg, qtdePar;
+    private int intTotalRegistro, intNumRegistro, intRegistro, qtdePar;
+    private String numSeg;
     private double valorT;
     private String nomeArquivo = "gerado.txt";
     private String linha, mostra = "";
     private String[] dadosCompra = null;
     private String[] columnNames = {"Loja", "Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
 
-    private final Connection conn;
 
     public Janela() {
         this.tx = new JTextField(50);
@@ -52,47 +55,16 @@ public class Janela extends JFrame implements ActionListener {
         this.botaoGravar.addActionListener(this);
         setLayout(new FlowLayout());
         
-        this.conn = new Conn().getConnection();
-        try {
-
-            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = stmt.executeQuery("select * from solicitacao_compras");
-
-            intTotalRegistro = 1;
-
-            defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
-            rs.beforeFirst();
-
-            while (rs.next()) {
-                intRegistro = rs.getInt("loja_id");
-                numSeg = rs.getInt("num_seguranca");
-                valorT = rs.getDouble("valor_total");
-                qtdePar = rs.getInt("qtd_parcelas");
-                campo[0] = Integer.toString(intRegistro);
-                campo[1] = rs.getString("cartao_id");
-                campo[2] = rs.getString("nome_cliente");
-                campo[3] = rs.getString("data_validade");
-                campo[4] = Integer.toString(numSeg);
-                campo[5] = Double.toString(valorT);
-                campo[6] = Integer.toString(qtdePar);
-                campo[7] = rs.getString("data_compra");
-                defaultTableModel.insertRow(intNumRegistro, campo);
-                intNumRegistro++;
-            }
-
-            rs.close();
-            stmt.close();
-            conn.close();
-
-        } catch (Exception e) {
-            e.getMessage();
-        }
+        defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
+        
+        this.preencheJTable();
 
         table = new JTable(defaultTableModel) {
             public boolean isCellEditable(int rowIndex, int vColIndex) {
                 return false;
             }
         };
+
         table.setDefaultRenderer(Object.class, new CellRenderer());
         table.getTableHeader().setReorderingAllowed(false);
         table.setPreferredScrollableViewportSize(new Dimension(1100, 300));
@@ -106,7 +78,7 @@ public class Janela extends JFrame implements ActionListener {
         add(botaoGerarRetorno);
         add(scroolPane);
 
-    }
+    } // Fim construtor
 
     public static void main(String[] args) {
         JFrame gui = new Janela();
@@ -138,15 +110,44 @@ public class Janela extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Preenche o JTable com os dados do banco de dados
+     */
+    private void preencheJTable() {
+        SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
+        List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.getSolicitacaoDeCompra(10);
+
+        for (int i = 0; i < solicitacoesCompras.size(); i++) {
+            intRegistro = solicitacoesCompras.get(i).getLojaId();
+
+            numSeg = solicitacoesCompras.get(i).getNumSeguranca();
+
+            valorT = solicitacoesCompras.get(i).getValorTotal();
+            qtdePar = solicitacoesCompras.get(i).getQtdParcelas();
+            campo[0] = Integer.toString(intRegistro);
+            campo[1] = solicitacoesCompras.get(i).getCartaoId();
+            campo[2] = solicitacoesCompras.get(i).getNomeCliente();
+            campo[3] = solicitacoesCompras.get(i).getDataValidade();
+            campo[4] = solicitacoesCompras.get(i).getNumSeguranca();
+            campo[5] = Double.toString(valorT);
+            campo[6] = Integer.toString(qtdePar);
+            campo[7] = solicitacoesCompras.get(i).getDataCompra();
+            this.defaultTableModel.insertRow(intNumRegistro, campo);
+            intNumRegistro++;
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botaoAbrir) {
             selecionar();
         }
         if (e.getSource() == botaoGravar) {
-            System.out.println("Botão acionado");
+            // Busca novamente os dados do banco de dados
+            this.preencheJTable();
+            
+            // atualiza o jtable
             this.table.repaint();
-            JOptionPane.showMessageDialog(null, "botão clicado");
             gerar();
         }
 
