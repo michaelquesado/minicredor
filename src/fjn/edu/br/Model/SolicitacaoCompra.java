@@ -15,6 +15,7 @@ public class SolicitacaoCompra {
     private int id;
     private int lojaId;
     private String cartaoId;
+    private int codigoVenda;
     private String nomeCliente;
     private String dataValidade;
     private String numSeguranca;
@@ -30,6 +31,7 @@ public class SolicitacaoCompra {
      *
      * @param lojaId ID da loja
      * @param cartaoId ID do cartão de crédito
+     * @param codigoVenda
      * @param nomeCliente Nome do cliente
      * @param dataValidade Data de validade do cartao
      * @param numSeguranca Numero de seguranca do cartao
@@ -37,17 +39,18 @@ public class SolicitacaoCompra {
      * @param qtdParcelas Quantidade de parcelas
      * @param dataCompra Data da compra
      */
-    public SolicitacaoCompra(int lojaId, String cartaoId, String nomeCliente,
+    public SolicitacaoCompra(int lojaId, String cartaoId, int codigoVenda, String nomeCliente,
             String dataValidade, String numSeguranca, double valorTotal,
             int qtdParcelas, String dataCompra) {
-        this.setLojaId(lojaId);
-        this.setCartaoId(cartaoId);
-        this.setNomeCliente(nomeCliente);
-        this.setDataValidade(dataValidade);
-        this.setNumSeguranca(numSeguranca);
-        this.setValorTotal(valorTotal);
-        this.setQtdParcelas(qtdParcelas);
-        this.setDataCompra(dataCompra);
+        this.lojaId = lojaId ;
+        this.cartaoId = cartaoId;
+        this.codigoVenda = codigoVenda;
+        this.nomeCliente = nomeCliente;
+        this.dataValidade = dataValidade;
+        this.numSeguranca = numSeguranca;
+        this.valorTotal = valorTotal;
+        this.qtdParcelas = qtdParcelas;
+        this.dataCompra = dataCompra;
     }
 
     public int getId() {
@@ -58,6 +61,14 @@ public class SolicitacaoCompra {
         this.id = id;
     }
 
+    public int getCodigoVenda() {
+        return codigoVenda;
+    }
+
+    public void setCodigoVenda(int codigoVenda) {
+        this.codigoVenda = codigoVenda;
+    }
+    
     public int getLojaId() {
         return lojaId;
     }
