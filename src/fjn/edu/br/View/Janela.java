@@ -30,14 +30,14 @@ public class Janela extends JFrame implements ActionListener {
     private JTextField tx;
     private JTable table;
     private DefaultTableModel defaultTableModel;
-    private String campo[] = new String[8];
+    private String campo[] = new String[9];
     private int intTotalRegistro, intNumRegistro, intRegistro, qtdePar;
     private String numSeg;
     private double valorT;
     private String nomeArquivo = "gerado.txt";
     private String linha, mostra = "";
     private String[] dadosCompra = null;
-    private String[] columnNames = {"Loja", "Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
+    private String[] columnNames = {"Loja", "Código da Venda" ,"Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
 
     public Janela() {
         this.tx = new JTextField(50);
@@ -47,6 +47,7 @@ public class Janela extends JFrame implements ActionListener {
 
         this.botaoAbrir.addActionListener(this);
         this.botaoGravar.addActionListener(this);
+        this.botaoGerarRetorno.addActionListener(this);
         setLayout(new FlowLayout());
 
         defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
@@ -119,13 +120,14 @@ public class Janela extends JFrame implements ActionListener {
             valorT = solicitacoesCompras.get(i).getValorTotal();
             qtdePar = solicitacoesCompras.get(i).getQtdParcelas();
             campo[0] = Integer.toString(intRegistro);
-            campo[1] = solicitacoesCompras.get(i).getCartaoId();
-            campo[2] = solicitacoesCompras.get(i).getNomeCliente();
-            campo[3] = solicitacoesCompras.get(i).getDataValidade();
-            campo[4] = solicitacoesCompras.get(i).getNumSeguranca();
-            campo[5] = Double.toString(valorT);
-            campo[6] = Integer.toString(qtdePar);
-            campo[7] = solicitacoesCompras.get(i).getDataCompra();
+            campo[1] = Integer.toString(solicitacoesCompras.get(i).getCodigoVenda());
+            campo[2] = solicitacoesCompras.get(i).getCartaoId();
+            campo[3] = solicitacoesCompras.get(i).getNomeCliente();
+            campo[4] = solicitacoesCompras.get(i).getDataValidade();
+            campo[5] = solicitacoesCompras.get(i).getNumSeguranca();
+            campo[6] = Double.toString(valorT);
+            campo[7] = Integer.toString(qtdePar);
+            campo[8] = solicitacoesCompras.get(i).getDataCompra();
             this.defaultTableModel.insertRow(intNumRegistro, campo);
             intNumRegistro++;
         }
@@ -139,12 +141,35 @@ public class Janela extends JFrame implements ActionListener {
         if (e.getSource() == botaoGravar) {
             // Busca novamente os dados do banco de dados
             // atualiza o jtable
-            
-            
             gerar();
             this.table.repaint();
             this.preencheJTable();
         }
+        if (e.getSource() == botaoGerarRetorno) {
+            System.out.println("Arquivo retorno sendo gerado aguarde");
+            System.out.println(table.getValueAt(table.getSelectedRow(), 0));
+            
+            
+               SolicitacaoCompra c =  getCompraArquivoRetorno();    
+               c.toString();
+            
+            
+        }
 
+    }
+
+    public SolicitacaoCompra getCompraArquivoRetorno() {
+
+        SolicitacaoCompra listaCompra = new SolicitacaoCompra();
+        listaCompra.setLojaId((int) table.getValueAt(table.getSelectedRow(), 0));
+        listaCompra.setCodigoVenda((int) table.getValueAt(table.getSelectedRow(), 1));
+        listaCompra.setCartaoId((String) table.getValueAt(table.getSelectedRow(), 2));
+        listaCompra.setNomeCliente((String) table.getValueAt(table.getSelectedRow(), 3));
+        listaCompra.setDataValidade((String) table.getValueAt(table.getSelectedRow(), 4));
+        listaCompra.setNumSeguranca((String) table.getValueAt(table.getSelectedRow(), 5));
+        listaCompra.setValorTotal((double) table.getValueAt(table.getSelectedRow(), 6));
+        listaCompra.setQtdParcelas((int) table.getValueAt(table.getSelectedRow(), 7));
+        listaCompra.setDataCompra((String) table.getValueAt(table.getSelectedRow(), 8));
+        return listaCompra;
     }
 }
