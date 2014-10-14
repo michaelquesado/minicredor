@@ -32,9 +32,9 @@ public class Janela extends JFrame implements ActionListener {
     private JTextField tx;
     private JTable table;
     private DefaultTableModel defaultTableModel;
-    private static String campo[] = new String[8];
-    private static int intTotalRegistro, intNumRegistro, intRegistro, numSeg, qtdePar;
-    private static double valorT;
+    private String campo[] = new String[8];
+    private int intTotalRegistro, intNumRegistro, intRegistro, numSeg, qtdePar;
+    private double valorT;
     private String nomeArquivo = "gerado.txt";
     private String linha, mostra = "";
     private String[] dadosCompra = null;
@@ -50,8 +50,8 @@ public class Janela extends JFrame implements ActionListener {
 
         this.botaoAbrir.addActionListener(this);
         this.botaoGravar.addActionListener(this);
-
         setLayout(new FlowLayout());
+        
         this.conn = new Conn().getConnection();
         try {
 
@@ -95,7 +95,7 @@ public class Janela extends JFrame implements ActionListener {
         };
         table.setDefaultRenderer(Object.class, new CellRenderer());
         table.getTableHeader().setReorderingAllowed(false);
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 100));
+        table.setPreferredScrollableViewportSize(new Dimension(900, 100));
         table.setFillsViewportHeight(true);
         table.setRowHeight(25);
 
@@ -103,8 +103,8 @@ public class Janela extends JFrame implements ActionListener {
         add(tx);
         add(botaoAbrir);
         add(botaoGravar);
-        add(scroolPane);
         add(botaoGerarRetorno);
+        add(scroolPane);
 
     }
 
