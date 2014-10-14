@@ -95,7 +95,7 @@ public class Janela extends JFrame implements ActionListener {
         };
         table.setDefaultRenderer(Object.class, new CellRenderer());
         table.getTableHeader().setReorderingAllowed(false);
-        table.setPreferredScrollableViewportSize(new Dimension(900, 100));
+        table.setPreferredScrollableViewportSize(new Dimension(1100, 300));
         table.setFillsViewportHeight(true);
         table.setRowHeight(25);
 
@@ -113,7 +113,7 @@ public class Janela extends JFrame implements ActionListener {
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gui.setVisible(true);
         gui.setSize(1200, 400);
-        gui.setLocation(300, 300);
+        gui.setLocation(50, 100);
         gui.setTitle("Dados da Venda");
     }
 
