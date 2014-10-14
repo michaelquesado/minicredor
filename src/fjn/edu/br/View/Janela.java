@@ -19,15 +19,15 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  * @author Antonio Siqueira
  * @author Fillip Quesado
  */
-
 public class Janela extends JFrame implements ActionListener {
 
-    private JButton bt1, bt2, bt3;
+    private JButton botaoAbrir, botaoGravar, botaoGerarRetorno;
     private JTextField tx;
     private JTable table;
     private DefaultTableModel modelo;
@@ -43,11 +43,13 @@ public class Janela extends JFrame implements ActionListener {
 
     public Janela() {
         this.tx = new JTextField(50);
-        this.bt1 = new JButton("Abrir");
-        this.bt1.addActionListener(this);
-        this.bt2 = new JButton("Gerar");
-        this.bt2.addActionListener(this);
-        this.bt3 = new JButton("Gerar Retorno");
+        this.botaoAbrir = new JButton("Abrir");
+        this.botaoGravar = new JButton("Gravar no Banco");
+        this.botaoGerarRetorno = new JButton("Gerar Retorno");
+        
+        this.botaoAbrir.addActionListener(this);
+        this.botaoGravar.addActionListener(this);
+        
         setLayout(new FlowLayout());
         this.conn = new Conn().getConnection();
         try {
@@ -55,27 +57,11 @@ public class Janela extends JFrame implements ActionListener {
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery("select * from solicitacao_compras");
 
-            intTotalRegistro = 0;
+            intTotalRegistro = 1;
 
             while (rs.next()) {
                 modelo = new DefaultTableModel(columnNames, intNumRegistro);
                 rs.beforeFirst();
-                rs.next();
-                intRegistro = rs.getInt("loja_id");
-                numSeg = rs.getInt("num_seguranca");
-                valorT = rs.getDouble("valor_total");
-                qtdePar = rs.getInt("qtd_parcelas");
-                campo[0] = Integer.toString(intRegistro);
-                campo[1] = rs.getString("cartao_id");
-                campo[2] = rs.getString("nome_cliente");
-                campo[3] = rs.getString("data_validade");
-                campo[4] = Integer.toString(numSeg);
-                campo[5] = Double.toString(valorT);
-                campo[6] = Integer.toString(qtdePar);
-                campo[7] = rs.getString("data_compra");
-                modelo.insertRow(0, campo);
-
-                intNumRegistro = 1;
 
                 while (rs.next()) {
                     intRegistro = rs.getInt("loja_id");
@@ -117,10 +103,10 @@ public class Janela extends JFrame implements ActionListener {
 
         JScrollPane scroolPane = new JScrollPane(table);
         add(tx);
-        add(bt1);
-        add(bt2);
+        add(botaoAbrir);
+        add(botaoGravar);
         add(scroolPane);
-        add(bt3);
+        add(botaoGerarRetorno);
 
     }
 
@@ -148,9 +134,7 @@ public class Janela extends JFrame implements ActionListener {
 
     public void gerar() {
         try {
-            
             LeitorArquivoRemesa.LerArquivo(tx.getText());
-
         } catch (Exception e) {
             System.out.print(e.getMessage());
         }
@@ -158,11 +142,13 @@ public class Janela extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == bt1) {
+        if (e.getSource() == botaoAbrir) {
             selecionar();
         }
-        if (e.getSource() == bt2) {
+        if (e.getSource() == botaoGravar) {
             System.out.println("Botão acionado");
+            this.table.repaint();
+            JOptionPane.showMessageDialog(null, "botão clicado");
             gerar();
         }
 
