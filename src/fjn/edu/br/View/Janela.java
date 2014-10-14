@@ -31,7 +31,7 @@ public class Janela extends JFrame implements ActionListener {
     private JButton botaoAbrir, botaoGravar, botaoGerarRetorno;
     private JTextField tx;
     private JTable table;
-    private DefaultTableModel modelo;
+    private DefaultTableModel defaultTableModel;
     private static String campo[] = new String[8];
     private static int intTotalRegistro, intNumRegistro, intRegistro, numSeg, qtdePar;
     private static double valorT;
@@ -60,7 +60,7 @@ public class Janela extends JFrame implements ActionListener {
 
             intTotalRegistro = 1;
 
-            modelo = new DefaultTableModel(columnNames, intNumRegistro);
+            defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
             rs.beforeFirst();
 
             while (rs.next()) {
@@ -76,7 +76,7 @@ public class Janela extends JFrame implements ActionListener {
                 campo[5] = Double.toString(valorT);
                 campo[6] = Integer.toString(qtdePar);
                 campo[7] = rs.getString("data_compra");
-                modelo.insertRow(intNumRegistro, campo);
+                defaultTableModel.insertRow(intNumRegistro, campo);
                 intNumRegistro++;
             }
 
@@ -88,7 +88,7 @@ public class Janela extends JFrame implements ActionListener {
             e.getMessage();
         }
 
-        table = new JTable(modelo) {
+        table = new JTable(defaultTableModel) {
             public boolean isCellEditable(int rowIndex, int vColIndex) {
                 return false;
             }
