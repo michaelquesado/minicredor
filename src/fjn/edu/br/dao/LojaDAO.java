@@ -21,11 +21,14 @@ public class LojaDAO {
 
     private Connection conn;
     public ArrayList<Loja> lojas;
+    
+    public LojaDAO(){
+        this.conn = new Conn().getConnection();
+    }
 
     public Loja getLojaById(int idLoja) {
         String sql = "SELECT * FROM lojas WHERE id=?";
-        this.conn = new Conn().getConnection();
-
+        
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idLoja);
@@ -37,13 +40,15 @@ public class LojaDAO {
                 loja.setId(dados.getInt("id"));
                 loja.setId(dados.getInt("loja"));
             }
-
+            
+            dados.close();
+            stmt.close();
+            
             return loja;
 
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            throw new RuntimeException("Erro ao tentar retornar lojas "+ ex.getMessage());
         }
 
-        return null;
     }
 }
