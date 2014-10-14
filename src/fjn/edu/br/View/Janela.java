@@ -47,10 +47,10 @@ public class Janela extends JFrame implements ActionListener {
         this.botaoAbrir = new JButton("Abrir");
         this.botaoGravar = new JButton("Gravar no Banco");
         this.botaoGerarRetorno = new JButton("Gerar Retorno");
-        
+
         this.botaoAbrir.addActionListener(this);
         this.botaoGravar.addActionListener(this);
-        
+
         setLayout(new FlowLayout());
         this.conn = new Conn().getConnection();
         try {
@@ -60,32 +60,29 @@ public class Janela extends JFrame implements ActionListener {
 
             intTotalRegistro = 1;
 
+            modelo = new DefaultTableModel(columnNames, intNumRegistro);
+            rs.beforeFirst();
+
             while (rs.next()) {
-                modelo = new DefaultTableModel(columnNames, intNumRegistro);
-                rs.beforeFirst();
-
-                while (rs.next()) {
-                    intRegistro = rs.getInt("loja_id");
-                    numSeg = rs.getInt("num_seguranca");
-                    valorT = rs.getDouble("valor_total");
-                    qtdePar = rs.getInt("qtd_parcelas");
-                    campo[0] = Integer.toString(intRegistro);
-                    campo[1] = rs.getString("cartao_id");
-                    campo[2] = rs.getString("nome_cliente");
-                    campo[3] = rs.getString("data_validade");
-                    campo[4] = Integer.toString(numSeg);
-                    campo[5] = Double.toString(valorT);
-                    campo[6] = Integer.toString(qtdePar);
-                    campo[7] = rs.getString("data_compra");
-                    modelo.insertRow(intNumRegistro, campo);
-                    intNumRegistro++;
-                }
-
-                rs.close();
-                stmt.close();
-                conn.close();
-
+                intRegistro = rs.getInt("loja_id");
+                numSeg = rs.getInt("num_seguranca");
+                valorT = rs.getDouble("valor_total");
+                qtdePar = rs.getInt("qtd_parcelas");
+                campo[0] = Integer.toString(intRegistro);
+                campo[1] = rs.getString("cartao_id");
+                campo[2] = rs.getString("nome_cliente");
+                campo[3] = rs.getString("data_validade");
+                campo[4] = Integer.toString(numSeg);
+                campo[5] = Double.toString(valorT);
+                campo[6] = Integer.toString(qtdePar);
+                campo[7] = rs.getString("data_compra");
+                modelo.insertRow(intNumRegistro, campo);
+                intNumRegistro++;
             }
+
+            rs.close();
+            stmt.close();
+            conn.close();
 
         } catch (Exception e) {
             e.getMessage();
