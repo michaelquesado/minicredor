@@ -8,6 +8,7 @@ package fjn.edu.br.Model;
 /**
  *
  * @author fillipquesado
+ * @author Uelio Nobre
  */
 public class SolicitacaoCompra {
 
