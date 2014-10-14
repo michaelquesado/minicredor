@@ -30,7 +30,7 @@ public class SolicitacaoCompraDAO {
     public void adicionarSolicitacaoCompra(SolicitacaoCompra compra) {
         String sql = "INSERT INTO solicitacao_compras (loja_id, cartao_id "
                 + ", nome_cliente, data_validade, num_seguranca, valor_total"
-                + ", qtd_parcelas, data_compra) VALUES (?,?,?,?,?,?,?,?)";
+                + ", qtd_parcelas, data_compra, codigo_venda) VALUES (?,?,?,?,?,?,?,?,?)";
 
         try {
             stmt = conn.prepareStatement(sql);
@@ -43,6 +43,7 @@ public class SolicitacaoCompraDAO {
             stmt.setDouble(6, compra.getValorTotal());
             stmt.setInt(7, compra.getQtdParcelas());
             stmt.setString(8, compra.getDataCompra());
+            stmt.setInt(9, compra.getCodigoVenda());
             stmt.execute();
 
             stmt.close();
