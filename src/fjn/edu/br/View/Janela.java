@@ -6,9 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -18,12 +16,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import fjn.edu.br.View.CellRenderer;
-import fjn.edu.br.View.ConectaBD;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+/**
+ * @author Antonio Siqueira
+ * @author Fillip Quesado
+ */
 
 public class Janela extends JFrame implements ActionListener {
 

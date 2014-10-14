@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * @author Antonio Sigueira
+ * 
  */
 
 public class CellRenderer extends DefaultTableCellRenderer {  
