@@ -1,7 +1,6 @@
 package fjn.edu.br.View;
 
 import credicard.LeitorArquivoRemesa;
-import fjn.edu.br.Connection.Conn;
 import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.SolicitacaoCompraDAO;
 import java.awt.Dimension;
@@ -40,7 +39,6 @@ public class Janela extends JFrame implements ActionListener {
     private String[] dadosCompra = null;
     private String[] columnNames = {"Loja", "Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
 
-
     public Janela() {
         this.tx = new JTextField(50);
         this.botaoAbrir = new JButton("Abrir");
@@ -50,10 +48,8 @@ public class Janela extends JFrame implements ActionListener {
         this.botaoAbrir.addActionListener(this);
         this.botaoGravar.addActionListener(this);
         setLayout(new FlowLayout());
-        
+
         defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
-        
-        this.preencheJTable();
 
         table = new JTable(defaultTableModel) {
             public boolean isCellEditable(int rowIndex, int vColIndex) {
@@ -73,6 +69,8 @@ public class Janela extends JFrame implements ActionListener {
         add(botaoGravar);
         add(botaoGerarRetorno);
         add(scroolPane);
+
+        this.preencheJTable();
 
     } // Fim construtor
 
@@ -140,11 +138,12 @@ public class Janela extends JFrame implements ActionListener {
         }
         if (e.getSource() == botaoGravar) {
             // Busca novamente os dados do banco de dados
-            this.preencheJTable();
-            
             // atualiza o jtable
-            this.table.repaint();
+            
+            
             gerar();
+            this.table.repaint();
+            this.preencheJTable();
         }
 
     }
