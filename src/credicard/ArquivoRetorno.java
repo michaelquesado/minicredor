@@ -48,7 +48,7 @@ public class ArquivoRetorno {
             // Calcula o valor da parcela
             double valorParcela = solicitacao.getValorTotal() / solicitacao.getQtdParcelas();
 
-            ret.setCodigoVenda(solicitacao.getId());
+            ret.setCodigoVenda(solicitacao.getCodigoVenda());
             ret.setIdCredor(1); // Nosso ID
             ret.setIdCartao(solicitacao.getCartaoId());
             ret.setDataEnvio(solicitacao.getDataCompra());
