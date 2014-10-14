@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 /**
  * @author Antonio Siqueira
  * @author Fillip Quesado
+ * @author Uelio Nobre
  */
 public class Janela extends JFrame implements ActionListener {
 
