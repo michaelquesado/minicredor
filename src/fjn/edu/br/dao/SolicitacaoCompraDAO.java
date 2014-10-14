@@ -70,6 +70,7 @@ public class SolicitacaoCompraDAO {
                 solicitacaoCompra.setId(rs.getInt("id"));
                 solicitacaoCompra.setLojaId(rs.getInt("loja_id"));
                 solicitacaoCompra.setCartaoId(rs.getString("cartao_id"));
+                solicitacaoCompra.setCodigoVenda(rs.getInt("codigo_venda"));
                 solicitacaoCompra.setNomeCliente(rs.getString("nome_cliente"));
                 solicitacaoCompra.setDataValidade(rs.getString("data_validade"));
                 solicitacaoCompra.setNumSeguranca(rs.getString("num_seguranca"));
