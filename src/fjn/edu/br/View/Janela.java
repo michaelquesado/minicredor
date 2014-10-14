@@ -18,11 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  * @author Antonio Siqueira
