@@ -1,6 +1,5 @@
 package fjn.edu.br.View;
 
-import credicard.ArquivoRetorno;
 import credicard.LeitorArquivoRemesa;
 import fjn.edu.br.Model.Loja;
 import fjn.edu.br.Model.SolicitacaoCompra;
@@ -21,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
-import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
