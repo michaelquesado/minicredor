@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 /**
  * @author Antonio Siqueira
@@ -46,7 +47,7 @@ public class Janela extends JFrame implements ActionListener {
     private JComboBox jComboboxlojas;
 
     public Janela() {
-        
+
         this.tx = new JTextField(50);
         this.botaoAbrir = new JButton("Abrir");
         this.botaoGravar = new JButton("Gravar no Banco");
@@ -58,32 +59,17 @@ public class Janela extends JFrame implements ActionListener {
         setLayout(new FlowLayout());
 
         defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
-        
+
         jComboboxlojas = new JComboBox();
-        
-        table = new JTable(defaultTableModel) {
-            public boolean isCellEditable(int rowIndex, int vColIndex) {
-                return false;
-            }
-        };
 
-        table.setDefaultRenderer(Object.class, new CellRenderer());
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setPreferredScrollableViewportSize(new Dimension(1100, 300));
-        table.setFillsViewportHeight(true);
-        table.setRowHeight(25);
-
-        JScrollPane scroolPane = new JScrollPane(table);
         add(jComboboxlojas);
         add(tx);
         add(botaoAbrir);
         add(botaoGravar);
         add(botaoGerarRetorno);
-        add(scroolPane);
-        
 
+        this.criaJTable();
         this.preencheJTable();
-        
 
     } // Fim construtor
 
@@ -101,7 +87,7 @@ public class Janela extends JFrame implements ActionListener {
         file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int i = file.showSaveDialog(null);
         if (i == 1) {
-            tx.setText("");
+            tx.setText(null);
         } else {
             File arquivo = file.getSelectedFile();
             tx.setText(arquivo.getPath());
@@ -112,19 +98,19 @@ public class Janela extends JFrame implements ActionListener {
     public void gerar() {
         try {
             LeitorArquivoRemesa.LerArquivo(tx.getText());
+            tx.setText(null);
         } catch (Exception e) {
             System.out.print(e.getMessage());
         }
     }
-    
-    private void preencherJComboBoxLojas(){
+
+    private void preencherJComboBoxLojas() {
         LojaDAO ldao = new LojaDAO();
         List<Loja> lojas = ldao.getAllLojas();
         comboBoxModel = new DefaultComboBoxModel();
-        
 
     }
-    
+
     /**
      * Preenche o JTable com os dados do banco de dados
      */
@@ -159,11 +145,20 @@ public class Janela extends JFrame implements ActionListener {
             selecionar();
         }
         if (e.getSource() == botaoGravar) {
+            
+            if (tx.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Selecione um arquivo para continuar!");
+                return;
+            }
+
             // Busca novamente os dados do banco de dados
             // atualiza o jtable
             gerar();
             this.table.repaint();
             this.preencheJTable();
+
+            // Apaga o texto do arquivo de texto
+            this.tx.setText("");
         }
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
@@ -189,5 +184,25 @@ public class Janela extends JFrame implements ActionListener {
         listaCompra.setQtdParcelas(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 7)));
         listaCompra.setDataCompra((String) table.getValueAt(table.getSelectedRow(), 8));
         return listaCompra;
+    }
+
+    /**
+     * Cria a tabela
+     */
+    public void criaJTable() {
+        table = new JTable(defaultTableModel) {
+            public boolean isCellEditable(int rowIndex, int vColIndex) {
+                return false;
+            }
+        };
+
+        table.setDefaultRenderer(Object.class, new CellRenderer());
+        table.getTableHeader().setReorderingAllowed(false);
+        table.setPreferredScrollableViewportSize(new Dimension(1100, 300));
+        table.setFillsViewportHeight(true);
+        table.setRowHeight(25);
+
+        JScrollPane scroolPane = new JScrollPane(table);
+        add(scroolPane);
     }
 }
