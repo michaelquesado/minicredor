@@ -1,5 +1,6 @@
 package fjn.edu.br.View;
 
+import credicard.ArquivoRetorno;
 import credicard.LeitorArquivoRemesa;
 import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.LojaDAO;
@@ -115,8 +116,10 @@ public class Janela extends JFrame implements ActionListener {
     private void preencheJTable() {
 
         SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
-        List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.getSolicitacaoDeCompra(10);
-        
+        List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
+                getSolicitacaoDeCompra("SELECT * FROM solicitacao_compras "
+                        + "ORDER BY id DESC LIMIT 10");
+
         // Zera os indices que são usados no defaultaTableModel.
         intNumRegistro = 0;
 
@@ -174,9 +177,15 @@ public class Janela extends JFrame implements ActionListener {
         }
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
+            String lojaComboSelecionada = (String) jComboboxlojas.getSelectedItem();
 
-            System.out.println(jComboboxlojas.getSelectedItem());
+            SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
+            List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
+                    getSolicitacaoDeCompra("select sc.* from solicitacao_compras sc"
+                            + " inner join lojas l on l.id = sc.loja_id"
+                            + " where l.nome_loja = '" + lojaComboSelecionada + "'");
 
+            ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
 
         }
 
