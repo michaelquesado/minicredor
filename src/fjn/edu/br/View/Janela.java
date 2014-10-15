@@ -145,6 +145,7 @@ public class Janela extends JFrame implements ActionListener {
     }
 
     // Remove os itens do defaultTableModel
+    // fazendo com que os registros não se repitam.
     public void limpaJTable() {
         while (this.defaultTableModel.getRowCount() > 0) {
             this.defaultTableModel.removeRow(0);
