@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,9 +34,16 @@ public class SolicitacaoCompraDAO {
                 + ", nome_cliente, data_validade, num_seguranca, valor_total"
                 + ", qtd_parcelas, data_compra, codigo_venda) VALUES (?,?,?,?,?,?,?,?,?)";
 
-        try {
-            stmt = conn.prepareStatement(sql);
+        /**
+         * Antes de cadastrar, verificamos se a compra já existe. Neste caso
+         */
+        if (solicitacaoExiste(compra)) {
+            return;
+        }
 
+        try {
+
+            stmt = conn.prepareStatement(sql);
             stmt.setInt(1, compra.getLojaId());
             stmt.setString(2, compra.getCartaoId());
             stmt.setString(3, compra.getNomeCliente());
@@ -44,10 +53,11 @@ public class SolicitacaoCompraDAO {
             stmt.setInt(7, compra.getQtdParcelas());
             stmt.setString(8, compra.getDataCompra());
             stmt.setInt(9, compra.getCodigoVenda());
-            stmt.execute();
 
+            stmt.execute();
             stmt.close();
             conn.close();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             //throw new RuntimeException(e);
@@ -85,6 +95,29 @@ public class SolicitacaoCompraDAO {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao tentar retornar ultimas compras \n " + e.getMessage());
         }
+    }
+
+    // Verifica se a solicitação já existe já existe a venda cadastrada
+    public boolean solicitacaoExiste(SolicitacaoCompra s) {
+        System.out.println("############## " + s.getCodigoVenda());
+        String sql = "SELECT COUNT(*) as total FROM solicitacao_compras WHERE codigo_venda = ?";
+
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, s.getCodigoVenda());
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            int totalRegistros = rs.getInt("total");
+            stmt.close();
+            return (totalRegistros > 0);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SolicitacaoCompraDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+
     }
 
 }
