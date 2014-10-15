@@ -55,13 +55,12 @@ public class SolicitacaoCompraDAO {
 
     }
 
-    public List<SolicitacaoCompra> getSolicitacaoDeCompra(int limit) {
-        String sql = "SELECT * FROM solicitacao_compras ORDER BY id DESC LIMIT " + limit;
+    public List<SolicitacaoCompra> getSolicitacaoDeCompra(String sql) {
         SolicitacaoCompra solicitacaoCompra;
         try {
 
             List<SolicitacaoCompra> compras = new ArrayList<>();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -84,7 +83,7 @@ public class SolicitacaoCompraDAO {
             return compras;
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao tentar retornar ultimas compras /n " + e.getMessage());
+            throw new RuntimeException("Erro ao tentar retornar ultimas compras \n " + e.getMessage());
         }
     }
 
