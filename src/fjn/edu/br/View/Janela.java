@@ -1,7 +1,7 @@
 package fjn.edu.br.View;
 
+import credicard.ArquivoRetorno;
 import credicard.LeitorArquivoRemesa;
-import fjn.edu.br.Model.Loja;
 import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.LojaDAO;
 import fjn.edu.br.dao.SolicitacaoCompraDAO;
@@ -39,7 +39,6 @@ public class Janela extends JFrame implements ActionListener {
     private JTextField tx;
     private JTable table;
     private DefaultTableModel defaultTableModel;
-    private DefaultComboBoxModel comboBoxModel;
     private String campo[] = new String[9];
     private int intTotalRegistro, intNumRegistro, intRegistro, qtdePar;
     private String numSeg;
@@ -121,8 +120,14 @@ public class Janela extends JFrame implements ActionListener {
      * Preenche o JTable com os dados do banco de dados
      */
     private void preencheJTable() {
+
         SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
-        List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.getSolicitacaoDeCompra(10);
+        List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
+                getSolicitacaoDeCompra("SELECT * FROM solicitacao_compras "
+                        + "ORDER BY id DESC LIMIT 10");
+
+        // Zera os indices que são usados no defaultaTableModel.
+        intNumRegistro = 0;
 
         for (int i = 0; i < solicitacoesCompras.size(); i++) {
             intRegistro = solicitacoesCompras.get(i).getLojaId();
@@ -143,6 +148,15 @@ public class Janela extends JFrame implements ActionListener {
             this.defaultTableModel.insertRow(intNumRegistro, campo);
             intNumRegistro++;
         }
+
+    }
+
+    // Remove os itens do defaultTableModel
+    // fazendo com que os registros não se repitam.
+    public void limpaJTable() {
+        while (this.defaultTableModel.getRowCount() > 0) {
+            this.defaultTableModel.removeRow(0);
+        }
     }
 
     @Override
@@ -161,6 +175,7 @@ public class Janela extends JFrame implements ActionListener {
             // Busca novamente os dados do banco de dados
             // atualiza o jtable
             gerar();
+            this.limpaJTable();
             this.table.repaint();
             this.preencheJTable();
 
@@ -168,7 +183,7 @@ public class Janela extends JFrame implements ActionListener {
             this.tx.setText("");
         }
         if (e.getSource() == botaoGerarRetorno) {
-			if(table.getSelectedRow() != 0){
+	if(table.getSelectedRow() != 0){
 				JOptionPane.showMessageDialog(null, "Escolha uma venda para gerar o retorno!","Selecione a Venda", JOptionPane.INFORMATION_MESSAGE, null);  //exibe a msg caso n�o tenha venda selecionada
 				return;
 			}
@@ -177,6 +192,23 @@ public class Janela extends JFrame implements ActionListener {
 			// ArquivoRetorno.gerarArquivoRetorno();
 			System.out.println(this.getCompraArquivoRetorno());
 		}
+
+            System.out.println("Arquivo retorno sendo gerado aguarde");
+            String lojaComboSelecionada = (String) jComboboxlojas.getSelectedItem();
+
+            if (!lojaComboSelecionada.equals("Selecione uma Loja")) {
+                SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
+                List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
+                        getSolicitacaoDeCompra("select sc.* from solicitacao_compras sc"
+                                + " inner join lojas l on l.id = sc.loja_id"
+                                + " where l.nome_loja = '" + lojaComboSelecionada + "'");
+
+                ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
+            }else{
+                JOptionPane.showMessageDialog(null, "Selecione uma loja para gerar \n o arquivo retorno.");
+            }
+
+        }
 
     }
 

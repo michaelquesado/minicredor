@@ -42,7 +42,7 @@ public class SolicitacaoCompra {
     public SolicitacaoCompra(int lojaId, String cartaoId, int codigoVenda, String nomeCliente,
             String dataValidade, String numSeguranca, double valorTotal,
             int qtdParcelas, String dataCompra) {
-        this.lojaId = lojaId ;
+        this.lojaId = lojaId;
         this.cartaoId = cartaoId;
         this.codigoVenda = codigoVenda;
         this.nomeCliente = nomeCliente;
@@ -68,7 +68,7 @@ public class SolicitacaoCompra {
     public void setCodigoVenda(int codigoVenda) {
         this.codigoVenda = codigoVenda;
     }
-    
+
     public int getLojaId() {
         return lojaId;
     }
