@@ -23,6 +23,9 @@ public class RetornoDAO {
 
     public void insert(Retorno r) {
 
+//        if(vendaExiste(r)){
+//            return;
+//        }
         try {
             String sql = "INSERT INTO Retornos (codVenda, idCredor, "
                     + "idCartao, valorParcela, numeroParcela, totalParcela, "
@@ -46,8 +49,9 @@ public class RetornoDAO {
 
     }
 
+    // Verifica se a solicitação já existe já existe a venda cadastrada
     public boolean vendaExiste(Retorno r) {
-        String sql = "SELECT COUNT(*) AS total FROM solicitacao_compras WHERE codigo_venda = ?";
+        String sql = "SELECT COUNT(*) AS total FROM retornos WHERE codvenda = ?";
         try {
             PreparedStatement stm = conexao.prepareStatement(sql);
             stm.setInt(1, r.getCodigoVenda());
@@ -58,7 +62,8 @@ public class RetornoDAO {
 
             // Armazena a quantidade de registros repetidos
             int totalRegistros = rs.getInt("total");
-            System.out.println("*****Total de registros" + totalRegistros);
+            stm.close();
+            return (totalRegistros > 0);
 
         } catch (SQLException ex) {
             System.out.println("ERRO");

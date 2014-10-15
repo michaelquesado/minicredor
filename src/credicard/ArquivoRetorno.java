@@ -10,7 +10,6 @@ import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.RetornoDAO;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
@@ -57,6 +56,12 @@ public class ArquivoRetorno {
             int dataVendaAno = Integer.parseInt(dataVenda[2]);
 
             RetornoDAO dao = new RetornoDAO();
+
+            // Verifica se já existe ja existe este arquivo retorno.
+            // Se já existir, então não o cadastre mais.
+            if (dao.vendaExiste(ret)) {
+                continue;
+            }
 
             // Deixar para o final... na hora de gravar o arquivo de texto 
             // ret.setNumeroParcela(numeroParcela);
