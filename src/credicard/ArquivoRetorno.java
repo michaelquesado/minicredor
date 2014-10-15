@@ -22,12 +22,7 @@ import java.util.List;
  */
 public class ArquivoRetorno {
 
-    private static final String NOME_ARQUIVO = "gerado.txt";
-    private String nomeArquivoRetorno;
-    private ArrayList<SolicitacaoCompra> solicitacaoCompras;
-
-    public ArquivoRetorno(ArrayList<SolicitacaoCompra> solicitacaoCompras) {
-        this.solicitacaoCompras = solicitacaoCompras;
+    public ArquivoRetorno() {
     }
 
     public static void gravarArquivoTxt(String string, String nomeArquivo) {
@@ -60,9 +55,10 @@ public class ArquivoRetorno {
             int dataVendaDia = Integer.parseInt(dataVenda[0]);
             int dataVendaMes = Integer.parseInt(dataVenda[1]);
             int dataVendaAno = Integer.parseInt(dataVenda[2]);
-            
+
             RetornoDAO dao = new RetornoDAO();
-        // Deixar para o final... na hora de gravar o arquivo de texto 
+
+            // Deixar para o final... na hora de gravar o arquivo de texto 
             // ret.setNumeroParcela(numeroParcela);
             for (int i = 1; i <= solicitacao.getQtdParcelas(); i++) {
                 SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
@@ -79,8 +75,11 @@ public class ArquivoRetorno {
                 dao.insert(ret);
             }
 
+            System.out.println(ret.output());
+
+            gravarArquivoTxt(ret.toString(), "Arquivo teste da boba serena.txt");
+            dao.insert(ret);
         }
-        gravarArquivoTxt(aux, "Arquivo teste da boba serena.txt");
 
     }
 
