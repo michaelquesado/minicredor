@@ -1,7 +1,6 @@
 package fjn.edu.br.View;
 
 import credicard.LeitorArquivoRemesa;
-import fjn.edu.br.Model.Loja;
 import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.LojaDAO;
 import fjn.edu.br.dao.SolicitacaoCompraDAO;
@@ -36,7 +35,6 @@ public class Janela extends JFrame implements ActionListener {
     private JTextField tx;
     private JTable table;
     private DefaultTableModel defaultTableModel;
-    private DefaultComboBoxModel comboBoxModel;
     private String campo[] = new String[9];
     private int intTotalRegistro, intNumRegistro, intRegistro, qtdePar;
     private String numSeg;
@@ -162,7 +160,7 @@ public class Janela extends JFrame implements ActionListener {
         }
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
-            
+            System.out.println(jComboboxlojas.getSelectedItem());
 
         }
 
