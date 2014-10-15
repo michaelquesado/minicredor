@@ -174,10 +174,9 @@ public class Janela extends JFrame implements ActionListener {
         }
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
-<<<<<<< HEAD
+
             System.out.println(jComboboxlojas.getSelectedItem());
-=======
->>>>>>> 2cffd99404ac1dfb616ecf5cd9b795387cfa3b58
+
 
         }
 
