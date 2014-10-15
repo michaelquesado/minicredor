@@ -6,7 +6,7 @@ Mini Credor é uma aplicação java, onde realizamos a simulação de ambiente e
 Banco de dados; /r/n
  Postgres
 
-SQL; /r/n
+SQL; 
 
 CREATE TABLE solicitacao_compras
 (
@@ -23,9 +23,26 @@ CREATE TABLE solicitacao_compras
   CONSTRAINT solicitacao_compras_pkey PRIMARY KEY (id)
 )
 
-/r/n
+
 
 create table lojas(
   id serial not null primary key,
   nome_loja varchar(100) not null
+);
+
+
+CREATE TABLE retornos
+(
+  codparcela serial NOT NULL,
+  codvenda numeric,
+  idcredor numeric,
+  idcartao text,
+  valorparcela numeric,
+  numeroparcela numeric,
+  totalparcela numeric,
+  dataenvio character varying,
+  CONSTRAINT retornos_pkey PRIMARY KEY (codparcela)
+)
+WITH (
+  OIDS=FALSE
 );
