@@ -21,7 +21,6 @@ import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
 import java.util.Vector;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
