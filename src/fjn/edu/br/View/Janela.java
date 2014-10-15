@@ -1,7 +1,10 @@
 package fjn.edu.br.View;
 
+import credicard.ArquivoRetorno;
 import credicard.LeitorArquivoRemesa;
+import fjn.edu.br.Model.Loja;
 import fjn.edu.br.Model.SolicitacaoCompra;
+import fjn.edu.br.dao.LojaDAO;
 import fjn.edu.br.dao.SolicitacaoCompraDAO;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -18,6 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 
 /**
  * @author Antonio Siqueira
@@ -30,6 +36,7 @@ public class Janela extends JFrame implements ActionListener {
     private JTextField tx;
     private JTable table;
     private DefaultTableModel defaultTableModel;
+    private DefaultComboBoxModel comboBoxModel;
     private String campo[] = new String[9];
     private int intTotalRegistro, intNumRegistro, intRegistro, qtdePar;
     private String numSeg;
@@ -37,9 +44,11 @@ public class Janela extends JFrame implements ActionListener {
     private String nomeArquivo = "gerado.txt";
     private String linha, mostra = "";
     private String[] dadosCompra = null;
-    private String[] columnNames = {"Loja", "Código da Venda" ,"Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
+    private String[] columnNames = {"Loja", "Código da Venda", "Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
+    private JComboBox jComboboxlojas;
 
     public Janela() {
+        
         this.tx = new JTextField(50);
         this.botaoAbrir = new JButton("Abrir");
         this.botaoGravar = new JButton("Gravar no Banco");
@@ -51,7 +60,9 @@ public class Janela extends JFrame implements ActionListener {
         setLayout(new FlowLayout());
 
         defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
-
+        
+        jComboboxlojas = new JComboBox();
+        
         table = new JTable(defaultTableModel) {
             public boolean isCellEditable(int rowIndex, int vColIndex) {
                 return false;
@@ -65,13 +76,16 @@ public class Janela extends JFrame implements ActionListener {
         table.setRowHeight(25);
 
         JScrollPane scroolPane = new JScrollPane(table);
+        add(jComboboxlojas);
         add(tx);
         add(botaoAbrir);
         add(botaoGravar);
         add(botaoGerarRetorno);
         add(scroolPane);
+        
 
         this.preencheJTable();
+        
 
     } // Fim construtor
 
@@ -104,7 +118,15 @@ public class Janela extends JFrame implements ActionListener {
             System.out.print(e.getMessage());
         }
     }
+    
+    private void preencherJComboBoxLojas(){
+        LojaDAO ldao = new LojaDAO();
+        List<Loja> lojas = ldao.getAllLojas();
+        comboBoxModel = new DefaultComboBoxModel();
+        
 
+    }
+    
     /**
      * Preenche o JTable com os dados do banco de dados
      */
@@ -148,12 +170,10 @@ public class Janela extends JFrame implements ActionListener {
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
             System.out.println(table.getValueAt(table.getSelectedRow(), 0));
-            
-            
-               SolicitacaoCompra c =  getCompraArquivoRetorno();    
-               c.toString();
-            
-            
+
+            //ArquivoRetorno.gerarArquivoRetorno();
+            System.out.println(this.getCompraArquivoRetorno());
+
         }
 
     }
@@ -161,14 +181,14 @@ public class Janela extends JFrame implements ActionListener {
     public SolicitacaoCompra getCompraArquivoRetorno() {
 
         SolicitacaoCompra listaCompra = new SolicitacaoCompra();
-        listaCompra.setLojaId((int) table.getValueAt(table.getSelectedRow(), 0));
-        listaCompra.setCodigoVenda((int) table.getValueAt(table.getSelectedRow(), 1));
+        listaCompra.setLojaId(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 0)));
+        listaCompra.setCodigoVenda(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 1)));
         listaCompra.setCartaoId((String) table.getValueAt(table.getSelectedRow(), 2));
         listaCompra.setNomeCliente((String) table.getValueAt(table.getSelectedRow(), 3));
         listaCompra.setDataValidade((String) table.getValueAt(table.getSelectedRow(), 4));
         listaCompra.setNumSeguranca((String) table.getValueAt(table.getSelectedRow(), 5));
-        listaCompra.setValorTotal((double) table.getValueAt(table.getSelectedRow(), 6));
-        listaCompra.setQtdParcelas((int) table.getValueAt(table.getSelectedRow(), 7));
+        listaCompra.setValorTotal(Double.parseDouble((String) table.getValueAt(table.getSelectedRow(), 6)));
+        listaCompra.setQtdParcelas(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 7)));
         listaCompra.setDataCompra((String) table.getValueAt(table.getSelectedRow(), 8));
         return listaCompra;
     }

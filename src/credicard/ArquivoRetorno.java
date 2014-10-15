@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  *
@@ -20,7 +21,8 @@ import java.util.GregorianCalendar;
  */
 public class ArquivoRetorno {
 
-    private static String nomeArquivoRetorno;
+    private static final String NOME_ARQUIVO = "gerado.txt";
+    private String nomeArquivoRetorno;
     private ArrayList<SolicitacaoCompra> solicitacaoCompras;
 
     public ArquivoRetorno(ArrayList<SolicitacaoCompra> solicitacaoCompras) {
@@ -31,14 +33,16 @@ public class ArquivoRetorno {
         try {
             Formatter saida = new Formatter(nomeArquivo);
             saida.format(string);
+            saida.format("\r\n");
             saida.close();
         } catch (FileNotFoundException e) {
             System.out.println("Erro ao gerar aquivo " + e.getMessage());
         }
     }
 
-    public static void gerarArquivoRetorno(SolicitacaoCompra solicitacao) {
+    public static void gerarArquivoRetorno(List<SolicitacaoCompra> solicitacaoCompra) {
 
+        for (SolicitacaoCompra solicitacao : solicitacaoCompra) {
         Retorno ret = new Retorno();
 
         // Calcula o valor da parcela
@@ -59,7 +63,6 @@ public class ArquivoRetorno {
 
         // Deixar para o final... na hora de gravar o arquivo de texto 
         // ret.setNumeroParcela(numeroParcela);
-        String aux = "";
         for (int i = 1; i <= solicitacao.getQtdParcelas(); i++) {
             SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
             Calendar c = new GregorianCalendar(dataVendaAno, dataVendaMes, dataVendaDia);
@@ -71,12 +74,10 @@ public class ArquivoRetorno {
             ret.setDataEnvio(novaDataEnvio.toString());
 
             System.out.println(ret.output());
-            aux += ret.toString() + "\r\n";
+
+                gravarArquivoTxt(ret.toString(), "Arquivo teste da boba serena.txt");
         }
-
-        ArquivoRetorno.nomeArquivoRetorno = "ArquivoRetorno" + solicitacao.getCartaoId();
-
-        gravarArquivoTxt(aux, nomeArquivoRetorno);
+        }
 
     }
 
