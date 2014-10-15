@@ -176,6 +176,7 @@ public class Janela extends JFrame implements ActionListener {
             this.tx.setText("");
         }
         if (e.getSource() == botaoGerarRetorno) {
+            
             System.out.println("Arquivo retorno sendo gerado aguarde");
             String lojaComboSelecionada = (String) jComboboxlojas.getSelectedItem();
 
@@ -187,7 +188,7 @@ public class Janela extends JFrame implements ActionListener {
                                 + " where l.nome_loja = '" + lojaComboSelecionada + "'");
 
                 ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Selecione uma loja para gerar \n o arquivo retorno.");
             }
 
