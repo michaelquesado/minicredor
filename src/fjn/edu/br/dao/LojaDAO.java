@@ -27,23 +27,19 @@ public class LojaDAO {
         this.conn = new Conn().getConnection();
     }
 
-    public List<Loja> getAllLojas() {
+    public List<String> getAllLojas() {
         String sql = "SELECT * FROM lojas ORDER BY nome_loja ";
-        Loja loja;
+        
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             ResultSet dados = stmt.executeQuery();
 
-            List<Loja> listaDeLojas = new ArrayList<>();
-
+            List<String> listaDeLojas = new ArrayList<String>();
+            listaDeLojas.add("Selecione uma Loja");
             while (dados.next()) {
-                loja = new Loja();
-
-                loja.setId(dados.getInt("id"));
-                loja.setNomeLoja(dados.getString("nome_loja"));
                 
-                listaDeLojas.add(loja);
+                listaDeLojas.add(dados.getString("nome_loja"));
             }
 
             dados.close();
