@@ -28,7 +28,7 @@ public class LojaDAO {
     }
 
     public List<Loja> getAllLojas() {
-        String sql = "SELECT * FROM lojas ORDE BY nome_loja ";
+        String sql = "SELECT * FROM lojas ORDER BY nome_loja ";
         Loja loja;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -52,7 +52,7 @@ public class LojaDAO {
             return listaDeLojas;
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao tentar retornar lojas " + ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
         }
 
     }
