@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
+import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -60,7 +61,7 @@ public class Janela extends JFrame implements ActionListener {
 
         defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
 
-        jComboboxlojas = new JComboBox();
+        this.preencherJcomboBox();
 
         add(jComboboxlojas);
         add(tx);
@@ -104,11 +105,10 @@ public class Janela extends JFrame implements ActionListener {
         }
     }
 
-    private void preencherJComboBoxLojas() {
+    private void preencherJcomboBox() {
         LojaDAO ldao = new LojaDAO();
-        List<Loja> lojas = ldao.getAllLojas();
-        comboBoxModel = new DefaultComboBoxModel();
-
+        List<String> lojas = ldao.getAllLojas();
+        jComboboxlojas = new JComboBox(new Vector<>(lojas));
     }
 
     /**
@@ -145,7 +145,7 @@ public class Janela extends JFrame implements ActionListener {
             selecionar();
         }
         if (e.getSource() == botaoGravar) {
-            
+
             if (tx.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Selecione um arquivo para continuar!");
                 return;
@@ -162,10 +162,7 @@ public class Janela extends JFrame implements ActionListener {
         }
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
-            System.out.println(table.getValueAt(table.getSelectedRow(), 0));
-
-            //ArquivoRetorno.gerarArquivoRetorno();
-            System.out.println(this.getCompraArquivoRetorno());
+            
 
         }
 
