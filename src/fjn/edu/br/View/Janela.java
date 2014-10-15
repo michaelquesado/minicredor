@@ -113,8 +113,12 @@ public class Janela extends JFrame implements ActionListener {
      * Preenche o JTable com os dados do banco de dados
      */
     private void preencheJTable() {
+
         SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
         List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.getSolicitacaoDeCompra(10);
+        
+        // Zera os indices que são usados no defaultaTableModel.
+        intNumRegistro = 0;
 
         for (int i = 0; i < solicitacoesCompras.size(); i++) {
             intRegistro = solicitacoesCompras.get(i).getLojaId();
@@ -135,6 +139,15 @@ public class Janela extends JFrame implements ActionListener {
             this.defaultTableModel.insertRow(intNumRegistro, campo);
             intNumRegistro++;
         }
+
+    }
+
+    // Remove os itens do defaultTableModel
+    // fazendo com que os registros não se repitam.
+    public void limpaJTable() {
+        while (this.defaultTableModel.getRowCount() > 0) {
+            this.defaultTableModel.removeRow(0);
+        }
     }
 
     @Override
@@ -152,6 +165,7 @@ public class Janela extends JFrame implements ActionListener {
             // Busca novamente os dados do banco de dados
             // atualiza o jtable
             gerar();
+            this.limpaJTable();
             this.table.repaint();
             this.preencheJTable();
 
@@ -160,7 +174,10 @@ public class Janela extends JFrame implements ActionListener {
         }
         if (e.getSource() == botaoGerarRetorno) {
             System.out.println("Arquivo retorno sendo gerado aguarde");
+<<<<<<< HEAD
             System.out.println(jComboboxlojas.getSelectedItem());
+=======
+>>>>>>> 2cffd99404ac1dfb616ecf5cd9b795387cfa3b58
 
         }
 
