@@ -179,13 +179,17 @@ public class Janela extends JFrame implements ActionListener {
             System.out.println("Arquivo retorno sendo gerado aguarde");
             String lojaComboSelecionada = (String) jComboboxlojas.getSelectedItem();
 
-            SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
-            List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
-                    getSolicitacaoDeCompra("select sc.* from solicitacao_compras sc"
-                            + " inner join lojas l on l.id = sc.loja_id"
-                            + " where l.nome_loja = '" + lojaComboSelecionada + "'");
+            if (!lojaComboSelecionada.equals("Selecione uma Loja")) {
+                SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
+                List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
+                        getSolicitacaoDeCompra("select sc.* from solicitacao_compras sc"
+                                + " inner join lojas l on l.id = sc.loja_id"
+                                + " where l.nome_loja = '" + lojaComboSelecionada + "'");
 
-            ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
+                ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
+            }else{
+                JOptionPane.showMessageDialog(null, "Selecione uma loja para gerar \n o arquivo retorno.");
+            }
 
         }
 
