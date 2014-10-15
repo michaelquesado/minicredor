@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,33 +22,37 @@ public class LojaDAO {
 
     private Connection conn;
     public ArrayList<Loja> lojas;
-    
-    public LojaDAO(){
+
+    public LojaDAO() {
         this.conn = new Conn().getConnection();
     }
 
-    public Loja getLojaById(int idLoja) {
-        String sql = "SELECT * FROM lojas WHERE id=?";
-        
+    public List<Loja> getAllLojas() {
+        String sql = "SELECT * FROM lojas ORDE BY nome_loja ";
+        Loja loja;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, idLoja);
 
             ResultSet dados = stmt.executeQuery();
-            Loja loja = new Loja();
+
+            List<Loja> listaDeLojas = new ArrayList<>();
 
             while (dados.next()) {
+                loja = new Loja();
+
                 loja.setId(dados.getInt("id"));
-                loja.setId(dados.getInt("loja"));
+                loja.setNomeLoja(dados.getString("nome_loja"));
+                
+                listaDeLojas.add(loja);
             }
-            
+
             dados.close();
             stmt.close();
-            
-            return loja;
+
+            return listaDeLojas;
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao tentar retornar lojas "+ ex.getMessage());
+            throw new RuntimeException("Erro ao tentar retornar lojas " + ex.getMessage());
         }
 
     }
