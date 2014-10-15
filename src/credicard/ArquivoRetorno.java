@@ -77,10 +77,9 @@ public class ArquivoRetorno {
 
             System.out.println(ret.output());
 
-            gravarArquivoTxt(ret.toString(), "Arquivo teste da boba serena.txt");
             dao.insert(ret);
         }
-
+        gravarArquivoTxt(aux, "Arquivo teste da boba serena.txt");
     }
 
 }
