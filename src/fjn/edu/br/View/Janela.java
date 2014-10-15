@@ -5,8 +5,10 @@ import fjn.edu.br.Model.Loja;
 import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.LojaDAO;
 import fjn.edu.br.dao.SolicitacaoCompraDAO;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -21,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -78,9 +81,12 @@ public class Janela extends JFrame implements ActionListener {
         JFrame gui = new Janela();
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gui.setVisible(true);
-        gui.setSize(1200, 400);
-        gui.setLocation(50, 100);
+        gui.setSize(1200, 450);
         gui.setTitle("Dados da Venda");
+        	
+        //Função de captura as coordenadas da tela que está sendo usado e centraliza todas as janelas
+      		Dimension tela = Toolkit.getDefaultToolkit().getScreenSize(); 
+      		gui.setLocation((tela.width - gui.getSize().width)/2,(tela.height - gui.getSize().height)/2); 
     }
 
     public void selecionar() {
@@ -147,7 +153,8 @@ public class Janela extends JFrame implements ActionListener {
         if (e.getSource() == botaoGravar) {
 
             if (tx.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Selecione um arquivo para continuar!");
+            	JOptionPane.showMessageDialog(null,
+						"Selecione um arquivo para continuar!","Escolha um arquivo",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
@@ -161,10 +168,15 @@ public class Janela extends JFrame implements ActionListener {
             this.tx.setText("");
         }
         if (e.getSource() == botaoGerarRetorno) {
-            System.out.println("Arquivo retorno sendo gerado aguarde");
-            
-
-        }
+			if(table.getSelectedRow() != 0){
+				JOptionPane.showMessageDialog(null, "Escolha uma venda para gerar o retorno!","Selecione a Venda", JOptionPane.INFORMATION_MESSAGE, null);  //exibe a msg caso não tenha venda selecionada
+				return;
+			}
+			System.out.println("Arquivo retorno sendo gerado aguarde");
+			System.out.println(table.getValueAt(table.getSelectedRow(), 0));
+			// ArquivoRetorno.gerarArquivoRetorno();
+			System.out.println(this.getCompraArquivoRetorno());
+		}
 
     }
 
