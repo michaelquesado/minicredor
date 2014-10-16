@@ -46,7 +46,7 @@ public class Janela extends JFrame implements ActionListener {
     private String nomeArquivo = "gerado.txt";
     private String linha, mostra = "";
     private String[] dadosCompra = null;
-    private String[] columnNames = {"Loja", "Código da Venda", "Nº do Cartão", "Cliente", "Validade", "Cod. segurança", "Valor Total", "Qtde. Parcelas", "Data Compra"};
+    private String[] columnNames = {"Loja", "CÃ³digo da Venda", "NÂº do CartÃ£o", "Cliente", "Validade", "Cod. seguranÃ§a", "Valor Total", "Qtde. Parcelas", "Data Compra"};
     private JComboBox jComboboxlojas;
 
     public Janela() {
@@ -82,10 +82,10 @@ public class Janela extends JFrame implements ActionListener {
         gui.setVisible(true);
         gui.setSize(1200, 450);
         gui.setTitle("Dados da Venda");
-        	
-        //Fun��o de captura as coordenadas da tela que est� sendo usado e centraliza todas as janelas
-      		Dimension tela = Toolkit.getDefaultToolkit().getScreenSize(); 
-      		gui.setLocation((tela.width - gui.getSize().width)/2,(tela.height - gui.getSize().height)/2); 
+
+        //Função de captura as coordenadas da tela que está sendo usado e centraliza todas as janelas
+        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+        gui.setLocation((tela.width - gui.getSize().width) / 2, (tela.height - gui.getSize().height) / 2);
     }
 
     public void selecionar() {
@@ -125,7 +125,7 @@ public class Janela extends JFrame implements ActionListener {
         List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
                 getSolicitacaoDeCompra(10);
 
-        // Zera os indices que são usados no defaultaTableModel.
+        // Zera os indices que sÃ£o usados no defaultaTableModel.
         intNumRegistro = 0;
 
         for (int i = 0; i < solicitacoesCompras.size(); i++) {
@@ -151,7 +151,7 @@ public class Janela extends JFrame implements ActionListener {
     }
 
     // Remove os itens do defaultTableModel
-    // fazendo com que os registros não se repitam.
+    // fazendo com que os registros nÃ£o se repitam.
     public void limpaJTable() {
         while (this.defaultTableModel.getRowCount() > 0) {
             this.defaultTableModel.removeRow(0);
@@ -166,8 +166,8 @@ public class Janela extends JFrame implements ActionListener {
         if (e.getSource() == botaoGravar) {
 
             if (tx.getText().equals("")) {
-            	JOptionPane.showMessageDialog(null,
-						"Selecione um arquivo para continuar!","Escolha um arquivo",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "Selecione um arquivo para continuar!", "Escolha um arquivo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
@@ -182,46 +182,26 @@ public class Janela extends JFrame implements ActionListener {
             this.tx.setText("");
         }
         if (e.getSource() == botaoGerarRetorno) {
-	if(table.getSelectedRow() != 0){
-				JOptionPane.showMessageDialog(null, "Escolha uma venda para gerar o retorno!","Selecione a Venda", JOptionPane.INFORMATION_MESSAGE, null);  //exibe a msg caso n�o tenha venda selecionada
-				return;
-			}
-			System.out.println("Arquivo retorno sendo gerado aguarde");
-			System.out.println(table.getValueAt(table.getSelectedRow(), 0));
-			// ArquivoRetorno.gerarArquivoRetorno();
-			System.out.println(this.getCompraArquivoRetorno());
-		}
 
             System.out.println("Arquivo retorno sendo gerado aguarde");
+
             String lojaComboSelecionada = (String) jComboboxlojas.getSelectedItem();
 
             if (!lojaComboSelecionada.equals("Selecione uma Loja")) {
+                
                 SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
+                
                 List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
                         getSolicitacaoDeCompraPorLoja(lojaComboSelecionada);
 
                 ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
-            }else{
+                
+                
+            } else {
                 JOptionPane.showMessageDialog(null, "Selecione uma loja para gerar \n o arquivo retorno.");
             }
-
         }
 
-    }
-
-    public SolicitacaoCompra getCompraArquivoRetorno() {
-
-        SolicitacaoCompra listaCompra = new SolicitacaoCompra();
-        listaCompra.setLojaId(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 0)));
-        listaCompra.setCodigoVenda(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 1)));
-        listaCompra.setCartaoId((String) table.getValueAt(table.getSelectedRow(), 2));
-        listaCompra.setNomeCliente((String) table.getValueAt(table.getSelectedRow(), 3));
-        listaCompra.setDataValidade((String) table.getValueAt(table.getSelectedRow(), 4));
-        listaCompra.setNumSeguranca((String) table.getValueAt(table.getSelectedRow(), 5));
-        listaCompra.setValorTotal(Double.parseDouble((String) table.getValueAt(table.getSelectedRow(), 6)));
-        listaCompra.setQtdParcelas(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 7)));
-        listaCompra.setDataCompra((String) table.getValueAt(table.getSelectedRow(), 8));
-        return listaCompra;
     }
 
     /**
