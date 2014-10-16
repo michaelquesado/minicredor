@@ -30,8 +30,8 @@ public class SolicitacaoCompraDAO {
                 + ", qtd_parcelas, data_compra, codigo_venda) VALUES (?,?,?,?,?,?,?,?,?)";
 
         /**
-         * Antes de cadastrar, verificamos se a compra já existe. Neste caso
-         * se der verdadeiro, então retorne e não deixe cair no try
+         * Antes de cadastrar, verificamos se a compra já existe. Neste caso se
+         * der verdadeiro, então retorne e não deixe cair no try
          */
         if (solicitacaoExiste(compra)) {
             return;
@@ -61,7 +61,47 @@ public class SolicitacaoCompraDAO {
 
     }
 
-    public List<SolicitacaoCompra> getSolicitacaoDeCompra(String sql) {
+    //retorna uma lista de solicitacao de compras
+    public List<SolicitacaoCompra> getSolicitacaoDeCompra(int limit) {
+        String sql = "SELECT * FROM solicitacao_compras "
+                        + "ORDER BY id DESC LIMIT "+limit;
+        return this.setList(sql);
+    }
+
+    //retorna uma lista de solicitacao de compras por loja
+    public List<SolicitacaoCompra> getSolicitacaoDeCompraPorLoja(String loja) {
+        String sql = "select sc.* from solicitacao_compras sc"
+                + " inner join lojas l on l.id = sc.loja_id"
+                + " where l.nome_loja = '" + loja + "'";
+        return this.setList(sql);
+    }
+
+    // Verifica se a solicitação já existe já existe a venda cadastrada
+    public boolean solicitacaoExiste(SolicitacaoCompra s) {
+        System.out.println("############## " + s.getCodigoVenda());
+        String sql = "SELECT COUNT(*) as total FROM solicitacao_compras WHERE codigo_venda = ? and loja_id = ? ";
+
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, s.getCodigoVenda());
+            stmt.setInt(2, s.getLojaId());
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            int totalRegistros = rs.getInt("total");
+            stmt.close();
+            return (totalRegistros > 0);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SolicitacaoCompraDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+
+    }
+    
+    //Agora eu posso reutilizar esse bloco em metodos que retornam lista de compras
+    //sem precisar deixar a cargo de quem chama passando a sql
+    private List<SolicitacaoCompra> setList(String sql) {
         SolicitacaoCompra solicitacaoCompra;
         try {
 
@@ -91,29 +131,6 @@ public class SolicitacaoCompraDAO {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao tentar retornar ultimas compras \n " + e.getMessage());
         }
-    }
-
-    // Verifica se a solicitação já existe já existe a venda cadastrada
-    public boolean solicitacaoExiste(SolicitacaoCompra s) {
-        System.out.println("############## " + s.getCodigoVenda());
-        String sql = "SELECT COUNT(*) as total FROM solicitacao_compras WHERE codigo_venda = ?";
-
-        try {
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, s.getCodigoVenda());
-
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            int totalRegistros = rs.getInt("total");
-            stmt.close();
-            return (totalRegistros > 0);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SolicitacaoCompraDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return false;
-
     }
 
 }
