@@ -35,7 +35,7 @@ import javax.swing.JOptionPane;
  */
 public class Janela extends JFrame implements ActionListener {
 
-    private JButton botaoAbrir, botaoGravar, botaoGerarRetorno;
+    private JButton botaoAbrir, botaoGravar, botaoGerarRetorno, botaoRSA;
     private JTextField tx;
     private JTable table;
     private DefaultTableModel defaultTableModel;
@@ -50,15 +50,17 @@ public class Janela extends JFrame implements ActionListener {
     private JComboBox jComboboxlojas;
 
     public Janela() {
-
+        
         this.tx = new JTextField(50);
         this.botaoAbrir = new JButton("Abrir");
         this.botaoGravar = new JButton("Gravar no Banco");
         this.botaoGerarRetorno = new JButton("Gerar Retorno");
-
+        this.botaoRSA = new JButton("Implementando RSA");
+        
         this.botaoAbrir.addActionListener(this);
         this.botaoGravar.addActionListener(this);
         this.botaoGerarRetorno.addActionListener(this);
+        this.botaoRSA.addActionListener(this);
         setLayout(new FlowLayout());
 
         defaultTableModel = new DefaultTableModel(columnNames, intNumRegistro);
@@ -70,7 +72,8 @@ public class Janela extends JFrame implements ActionListener {
         add(botaoAbrir);
         add(botaoGravar);
         add(botaoGerarRetorno);
-
+        add(botaoRSA);
+        
         this.criaJTable();
         this.preencheJTable();
 
@@ -162,6 +165,9 @@ public class Janela extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botaoAbrir) {
             selecionar();
+        }
+        if (e.getSource() == botaoRSA) {
+            new OperadoraRSA().setVisible(true);
         }
         if (e.getSource() == botaoGravar) {
 
