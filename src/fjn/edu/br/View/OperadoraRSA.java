@@ -6,9 +6,29 @@
 
 package fjn.edu.br.View;
 
+import credicard.ArquivoRetorno;
+import credicard.RSA;
+import fjn.edu.br.Model.Retorno;
+import fjn.edu.br.Model.SolicitacaoCompra;
+import fjn.edu.br.dao.RetornoDAO;
+import fjn.edu.br.dao.SolicitacaoCompraDAO;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
- * @author Marylia
+ * @author jnetop
  */
 public class OperadoraRSA extends javax.swing.JFrame {
 
@@ -37,6 +57,11 @@ public class OperadoraRSA extends javax.swing.JFrame {
         jLabel1.setText("Selecione uma remessa:");
 
         jButton1.setText("Selecionar \"Envio da Loja\"");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         statusTx.setText(" ");
 
@@ -61,11 +86,98 @@ public class OperadoraRSA extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jButton1)
                     .addComponent(statusTx))
-                .addContainerGap(341, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFileChooser dialogoJFC = new JFileChooser();
+        dialogoJFC.setFileFilter(new FileNameExtensionFilter("Arquivos de texto", new String[]{"txt", "XT"}));
+        if(dialogoJFC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+            File file = dialogoJFC.getSelectedFile();
+            statusTx.setText(file.getName());
+            try {
+                // Lendo o conteudo do .txt
+                FileReader reader = new FileReader(file);
+                BufferedReader bufferR = new BufferedReader(reader);
+                
+                try {
+                    // Devido a formatação resultado da criptografia é preciso
+                    // concatenar os linhas em uma unica String.
+                    String texto = "";
+                    String linha = bufferR.readLine();
+                    while(linha != null){
+                        texto += linha;
+                        linha = bufferR.readLine();
+                    }
+                    
+                    String[] solicitacoes = texto.split(",");
+                    
+                    for (int i = 0; i < solicitacoes.length; i++) {
+                        String retorno = "";
+                        String[] solicitacao = RSA.getDecrypt(solicitacoes[i], new File("Key.private")).split(",");
+                        
+                        int idLoja = Integer.valueOf(solicitacao[0].trim());
+                        String idCartao = solicitacao[1].trim();
+                        int idVenda = Integer.valueOf(solicitacao[2].trim());
+                        String nome = solicitacao[3].trim();
+                        String dataVencimento = solicitacao[4].trim();
+                        String numSeguranca = solicitacao[5].trim();
+                        double valorTotal = Double.valueOf(solicitacao[6].trim());
+                        int qtdParcelas = Integer.valueOf(solicitacao[7].trim());
+                        String dataCompra = solicitacao[8].trim();
+                        
+                        SolicitacaoCompra sc = new SolicitacaoCompra();
+                        sc.setLojaId(idLoja);
+                        sc.setCartaoId(idCartao);
+                        sc.setCodigoVenda(idVenda);
+                        sc.setNomeCliente(nome);
+                        sc.setDataValidade(dataCompra);
+                        sc.setNumSeguranca(numSeguranca);
+                        sc.setValorTotal(valorTotal);
+                        sc.setQtdParcelas(qtdParcelas);
+                        sc.setDataCompra(dataCompra);
+                        SolicitacaoCompraDAO scDAO = new SolicitacaoCompraDAO();
+                        scDAO.adicionarSolicitacaoCompra(sc);
+                        
+                        // PrintWriter pw = new PrintWriter("EnvioDaOperadora"+new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime())+".txt");
+                        Calendar c = Calendar.getInstance();
+                        
+                        for (int j = 0; j < sc.getQtdParcelas(); j++) {
+                            Retorno r = new Retorno();
+                            r.setCodigoVenda(idVenda);
+                            r.setIdCredor(1);
+                            r.setIdCartao(idCartao);
+                            r.setValorParcela(valorTotal/qtdParcelas);
+                            r.setNumeroParcela(j+1);
+                            r.setTotalParcela(qtdParcelas);
+                            r.setDataEnvio(new SimpleDateFormat("dd/MM/YYYY").format(c.getTime()));
+                            
+                            String parcela = r.getCodigoVenda() + ", " + r.getIdCredor() + ", " + r.getIdCartao() + ", " + r.getValorParcela() + ", " + r.getNumeroParcela() + ", " + r.getTotalParcela() + ", " + r.getDataEnvio();
+                            String criptoParcela = "";
+                            if(j == sc.getQtdParcelas()-1){
+                                criptoParcela = RSA.getEncrypt(parcela, new File("Key.public"));
+                            }else{
+                                criptoParcela = RSA.getEncrypt(parcela, new File("Key.public")) + ",\r\n";
+                            }
+                            
+                            retorno += criptoParcela;
+                            new RetornoDAO().insert(r);
+
+                            c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH)+30);
+                        }
+                        ArquivoRetorno.gravarArquivoTxt(retorno, "EnvioDaOperadora"+new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime())+".txt");
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(OperadoraRSA.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(OperadoraRSA.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

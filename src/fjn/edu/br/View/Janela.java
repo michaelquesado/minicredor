@@ -12,6 +12,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -23,6 +27,8 @@ import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -51,6 +57,7 @@ public class Janela extends JFrame implements ActionListener {
 
     public Janela() {
         
+        
         this.tx = new JTextField(50);
         this.botaoAbrir = new JButton("Abrir");
         this.botaoGravar = new JButton("Gravar no Banco");
@@ -77,8 +84,7 @@ public class Janela extends JFrame implements ActionListener {
         this.criaJTable();
         this.preencheJTable();
 
-    } // Fim construtor
-
+    }
     public static void main(String[] args) {
         JFrame gui = new Janela();
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,6 +35,7 @@ public class SolicitacaoCompraDAO {
          * der verdadeiro, então retorne e não deixe cair no try
          */
         if (solicitacaoExiste(compra)) {
+            JOptionPane.showMessageDialog(null, "Esta solicitação já está registrada.");
             return;
         }
 
@@ -54,9 +56,8 @@ public class SolicitacaoCompraDAO {
             stmt.close();
             conn.close();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            //throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            Logger.getLogger(SolicitacaoCompraDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
