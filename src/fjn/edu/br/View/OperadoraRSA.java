@@ -12,6 +12,7 @@ import fjn.edu.br.Model.Retorno;
 import fjn.edu.br.Model.SolicitacaoCompra;
 import fjn.edu.br.dao.RetornoDAO;
 import fjn.edu.br.dao.SolicitacaoCompraDAO;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +54,7 @@ public class OperadoraRSA extends javax.swing.JFrame {
         statusTx = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Implementa RSA");
 
         jLabel1.setText("Selecione uma remessa:");
 
@@ -114,9 +116,8 @@ public class OperadoraRSA extends javax.swing.JFrame {
                     }
                     
                     String[] solicitacoes = texto.split(",");
-                    
+                    String retorno = "";
                     for (int i = 0; i < solicitacoes.length; i++) {
-                        String retorno = "";
                         String[] solicitacao = RSA.getDecrypt(solicitacoes[i], new File("Key.private")).split(",");
                         
                         int idLoja = Integer.valueOf(solicitacao[0].trim());
@@ -142,7 +143,6 @@ public class OperadoraRSA extends javax.swing.JFrame {
                         SolicitacaoCompraDAO scDAO = new SolicitacaoCompraDAO();
                         scDAO.adicionarSolicitacaoCompra(sc);
                         
-                        // PrintWriter pw = new PrintWriter("EnvioDaOperadora"+new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime())+".txt");
                         Calendar c = Calendar.getInstance();
                         
                         for (int j = 0; j < sc.getQtdParcelas(); j++) {
@@ -157,7 +157,7 @@ public class OperadoraRSA extends javax.swing.JFrame {
                             
                             String parcela = r.getCodigoVenda() + ", " + r.getIdCredor() + ", " + r.getIdCartao() + ", " + r.getValorParcela() + ", " + r.getNumeroParcela() + ", " + r.getTotalParcela() + ", " + r.getDataEnvio();
                             String criptoParcela = "";
-                            if(j == sc.getQtdParcelas()-1){
+                            if((i == solicitacoes.length - 1) && (j == sc.getQtdParcelas()-1)){
                                 criptoParcela = RSA.getEncrypt(parcela, new File("Key.public"));
                             }else{
                                 criptoParcela = RSA.getEncrypt(parcela, new File("Key.public")) + ",\r\n";
@@ -168,8 +168,10 @@ public class OperadoraRSA extends javax.swing.JFrame {
 
                             c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH)+30);
                         }
-                        ArquivoRetorno.gravarArquivoTxt(retorno, "EnvioDaOperadora"+new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime())+".txt");
                     }
+                    String nomeArquivo = "EnvioDaOperadora"+new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime())+".txt";
+                    ArquivoRetorno.gravarArquivoTxt(retorno, nomeArquivo);
+                    Desktop.getDesktop().open(new File(nomeArquivo));
                 } catch (IOException ex) {
                     Logger.getLogger(OperadoraRSA.class.getName()).log(Level.SEVERE, null, ex);
                 }
