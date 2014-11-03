@@ -188,15 +188,14 @@ public class Janela extends JFrame implements ActionListener {
             String lojaComboSelecionada = (String) jComboboxlojas.getSelectedItem();
 
             if (!lojaComboSelecionada.equals("Selecione uma Loja")) {
-                
+
                 SolicitacaoCompraDAO solicitacaoCompraDAO = new SolicitacaoCompraDAO();
-                
+
                 List<SolicitacaoCompra> solicitacoesCompras = solicitacaoCompraDAO.
                         getSolicitacaoDeCompraPorLoja(lojaComboSelecionada);
 
                 ArquivoRetorno.gerarArquivoRetorno(solicitacoesCompras);
-                
-                
+
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione uma loja para gerar \n o arquivo retorno.");
             }
