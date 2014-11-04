@@ -51,10 +51,11 @@ public class RetornoDAO {
 
     // Verifica se a solicitação já existe já existe a venda cadastrada
     public boolean vendaExiste(Retorno r) {
-        String sql = "SELECT COUNT(*) AS total FROM retornos WHERE codvenda = ?";
+        String sql = "SELECT COUNT(*) AS total FROM retornos WHERE codvenda = ? and idcartao = ? ";
         try {
             PreparedStatement stm = conexao.prepareStatement(sql);
             stm.setInt(1, r.getCodigoVenda());
+            stm.setString(2, r.getIdCartao());
             ResultSet rs = stm.executeQuery();
 
             // Passa para a primeira linha de resultado.
