@@ -1,5 +1,5 @@
 /build/
-/nbproject/**
+/nbproject/
 /dist/
 /src/fjn/edu/br/Connection/**
 

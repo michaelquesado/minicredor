@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -49,14 +50,25 @@ public class OperadoraRSA extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        statusTx = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        status3Tx = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        status1Tx = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        status2Tx = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Implementa RSA");
 
-        jLabel1.setText("Selecione uma remessa:");
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("3º Passo: Selecione o arquivo enviado pela loja"));
 
         jButton1.setText("Selecionar \"Envio da Loja\"");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -65,7 +77,121 @@ public class OperadoraRSA extends javax.swing.JFrame {
             }
         });
 
-        statusTx.setText(" ");
+        jLabel1.setText("Selecione uma remessa:");
+
+        status3Tx.setText(" ");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(status3Tx)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton1)
+                    .addComponent(status3Tx))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("1º Passo: Selecione uma Chave Privada"));
+
+        jLabel2.setText("Selecione a chave:");
+
+        jButton2.setText("Selecionar \"Chave Privada\"");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        status1Tx.setText(" ");
+
+        jLabel3.setText("* A chave será usada para decifrar o que foi enviado pela loja.");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(status1Tx))
+                    .addComponent(jLabel3))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jButton2)
+                    .addComponent(status1Tx))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("2º Passo: Selecione uma Chave Pública"));
+
+        jLabel4.setText("Selecione a chave:");
+
+        jButton3.setText("Selecionar \"Chave Pública\"");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        status2Tx.setText(" ");
+
+        jLabel5.setText("* É necessário para cifrar as parcelas geradas para então enviar à loja.");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(status2Tx))
+                    .addComponent(jLabel5))
+                .addContainerGap(191, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jButton3)
+                    .addComponent(status2Tx))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,21 +199,21 @@ public class OperadoraRSA extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusTx)
-                .addContainerGap(283, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1)
-                    .addComponent(statusTx))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -95,11 +221,19 @@ public class OperadoraRSA extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(chavePrivada == null){
+            JOptionPane.showMessageDialog(this, "Você deve selecionar uma Chave Privada.");
+            return;
+        }
+        if(chavePublica == null){
+            JOptionPane.showMessageDialog(this, "Você deve selecionar uma Chave Pública.");
+            return;
+        }
         JFileChooser dialogoJFC = new JFileChooser();
-        dialogoJFC.setFileFilter(new FileNameExtensionFilter("Arquivos de texto", new String[]{"txt", "XT"}));
+        dialogoJFC.setFileFilter(new FileNameExtensionFilter("Arquivos de texto", new String[]{"txt", "TXT"}));
         if(dialogoJFC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             File file = dialogoJFC.getSelectedFile();
-            statusTx.setText(file.getName());
+            status3Tx.setText(file.getName());
             try {
                 // Lendo o conteudo do .txt
                 FileReader reader = new FileReader(file);
@@ -118,7 +252,7 @@ public class OperadoraRSA extends javax.swing.JFrame {
                     String[] solicitacoes = texto.split(",");
                     String retorno = "";
                     for (int i = 0; i < solicitacoes.length; i++) {
-                        String[] solicitacao = RSA.getDecrypt(solicitacoes[i], new File("Key.private")).split(",");
+                        String[] solicitacao = RSA.getDecrypt(solicitacoes[i], chavePrivada).split(",");
                         
                         int idLoja = Integer.valueOf(solicitacao[0].trim());
                         String idCartao = solicitacao[1].trim();
@@ -158,9 +292,9 @@ public class OperadoraRSA extends javax.swing.JFrame {
                             String parcela = r.getCodigoVenda() + ", " + r.getIdCredor() + ", " + r.getIdCartao() + ", " + r.getValorParcela() + ", " + r.getNumeroParcela() + ", " + r.getTotalParcela() + ", " + r.getDataEnvio();
                             String criptoParcela = "";
                             if((i == solicitacoes.length - 1) && (j == sc.getQtdParcelas()-1)){
-                                criptoParcela = RSA.getEncrypt(parcela, new File("Key.public"));
+                                criptoParcela = RSA.getEncrypt(parcela, chavePublica);
                             }else{
-                                criptoParcela = RSA.getEncrypt(parcela, new File("Key.public")) + ",\r\n";
+                                criptoParcela = RSA.getEncrypt(parcela, chavePublica) + ",\r\n";
                             }
                             
                             retorno += criptoParcela;
@@ -180,6 +314,28 @@ public class OperadoraRSA extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+    File chavePrivada = null;
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        JFileChooser fC = new JFileChooser(System.getProperty("user.dir"));
+        fC.setDialogType(JFileChooser.FILES_ONLY);
+        fC.setFileFilter(new FileNameExtensionFilter("Chaves Privadas", new String[]{"private", "PRIVATE"}));
+        if (fC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            chavePrivada = fC.getSelectedFile();
+            status1Tx.setText("Uma chave foi selecionada.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    File chavePublica = null;
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JFileChooser fC = new JFileChooser(System.getProperty("user.dir"));
+        fC.setDialogType(JFileChooser.FILES_ONLY);
+        fC.setFileFilter(new FileNameExtensionFilter("Chaves Públicas", new String[]{"public", "PUBLIC"}));
+        if (fC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            chavePublica = fC.getSelectedFile();
+            status2Tx.setText("Uma chave foi selecionada.");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,7 +374,18 @@ public class OperadoraRSA extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel statusTx;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel status1Tx;
+    private javax.swing.JLabel status2Tx;
+    private javax.swing.JLabel status3Tx;
     // End of variables declaration//GEN-END:variables
 }
