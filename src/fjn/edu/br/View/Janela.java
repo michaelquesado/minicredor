@@ -128,7 +128,7 @@ public class Janela extends JFrame implements ActionListener {
     }
 
     /**
-     * Preenche o JTable com os dados do banco de dados
+     * Preenche o JTable com os dados salvos no banco de dados
      */
     private void preencheJTable() {
 
