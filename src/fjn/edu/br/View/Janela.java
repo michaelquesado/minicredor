@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -35,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import sun.misc.BASE64Encoder;
 
 /**
  * @author Antonio Siqueira
@@ -97,6 +100,16 @@ public class Janela extends JFrame implements ActionListener {
         //Função de captura as coordenadas da tela que está sendo usado e centraliza todas as janelas
         Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
         gui.setLocation((tela.width - gui.getSize().width) / 2, (tela.height - gui.getSize().height) / 2);
+        
+//          PrivateKey privateKey;
+//        try {
+//            PublicKey publicKey = RSA.getPublicKey(new File("Key.public"));
+//            System.out.println(new BASE64Encoder().encode(publicKey.getEncoded()));
+//        } catch (IOException ex) {
+//            Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(Janela.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public void selecionar() {
